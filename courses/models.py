@@ -27,7 +27,8 @@ class Course(BaseModel):
     """
     The Course main model,
     ManyToOne relationship with :model: `User`,
-    ManyToMany relationship with :model: `Subject`.
+    ManyToMany relationship with :model: `Subject`,
+    ManyToMany relationship with :model: `User`.
     """
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='courses_created', verbose_name=_('owner')
@@ -36,6 +37,7 @@ class Course(BaseModel):
     title = models.CharField(max_length=50, verbose_name=_('title'))
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(verbose_name=_('description'))
+    students = models.ManyToManyField(User, related_name='my_courses', verbose_name=_('students'))
 
     class Meta:
         verbose_name = _('course')
