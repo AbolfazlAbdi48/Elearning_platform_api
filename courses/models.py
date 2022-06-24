@@ -27,14 +27,12 @@ class Course(BaseModel):
     """
     The Course main model,
     ManyToOne relationship with :model: `User`,
-    ManyToOne relationship with :model: `Subject`.
+    ManyToMany relationship with :model: `Subject`.
     """
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='courses_created', verbose_name=_('owner')
     )
-    subject = models.ForeignKey(
-        Subject, on_delete=models.CASCADE, related_name='courses'
-    )
+    subject = models.ManyToManyField(Subject, related_name='courses', verbose_name=_('subject'))
     title = models.CharField(max_length=50, verbose_name=_('title'))
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(verbose_name=_('description'))
