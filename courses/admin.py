@@ -33,7 +33,7 @@ class ChapterAdmin(admin.ModelAdmin):
 
 class ContentAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'updated')
-    list_display = ('title', 'chapter')
+    list_display = ('title', 'chapter', 'is_active')
 
 
 admin.site.register(Subject, SubjectAdmin)

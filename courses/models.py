@@ -37,11 +37,13 @@ class Course(BaseModel):
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='courses_created', verbose_name=_('owner')
     )
-    subject = models.ManyToManyField(Subject, related_name='courses', verbose_name=_('subject'))
+    subject = models.ManyToManyField(
+        Subject, related_name='courses', verbose_name=_('subject'))
     title = models.CharField(max_length=50, verbose_name=_('title'))
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(verbose_name=_('description'))
-    students = models.ManyToManyField(User, related_name='my_courses', verbose_name=_('students'))
+    students = models.ManyToManyField(
+        User, related_name='my_courses', verbose_name=_('students'))
     status = models.CharField(
         max_length=10, choices=PublishStatus.choices, default=PublishStatus.DRAFT, verbose_name=_('status')
     )
@@ -88,6 +90,7 @@ class Content(BaseModel):
     attached_file = models.FileField(
         upload_to='contents/files/', null=True, blank=True, verbose_name=_('attached files')
     )
+    is_active = models.BooleanField(default=True, verbose_name=_('is active'))
 
     class Meta:
         verbose_name = _('content')
