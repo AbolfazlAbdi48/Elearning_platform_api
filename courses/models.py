@@ -30,6 +30,10 @@ class Course(BaseModel):
     ManyToMany relationship with :model: `Subject`,
     ManyToMany relationship with :model: `User`.
     """
+    class PublishStatus(models.TextChoices):
+        PUBLISHED = 'p', _('published')
+        DRAFT = 'd', _('draft')
+
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='courses_created', verbose_name=_('owner')
     )
@@ -38,6 +42,9 @@ class Course(BaseModel):
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(verbose_name=_('description'))
     students = models.ManyToManyField(User, related_name='my_courses', verbose_name=_('students'))
+    status = models.CharField(
+        max_length=10, choices=PublishStatus.choices, default=PublishStatus.DRAFT, verbose_name=_('status')
+    )
 
     class Meta:
         verbose_name = _('course')
