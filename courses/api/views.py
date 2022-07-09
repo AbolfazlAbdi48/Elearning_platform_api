@@ -1,10 +1,11 @@
 from rest_framework.generics import ListAPIView
 
-from courses.models import Subject
+from courses.models import Course, Subject
 
-from .serializers import SubjectListSerializer
+from .serializers import CourseListSerializer, SubjectListSerializer
 
 # create your views here.
+
 
 class SubjectList(ListAPIView):
     """
@@ -14,4 +15,13 @@ class SubjectList(ListAPIView):
 
     serializer_class = SubjectListSerializer
     queryset = Subject.objects.all()
-    
+
+
+class CourseList(ListAPIView):
+    """
+    get:
+        return published courses for all users.
+    """
+
+    serializer_class = CourseListSerializer
+    queryset = Course.objects.filter(status=Course.PublishStatus.PUBLISHED)
