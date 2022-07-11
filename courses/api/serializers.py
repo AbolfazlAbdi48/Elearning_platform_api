@@ -1,4 +1,3 @@
-from dataclasses import field
 from rest_framework import serializers
 from courses.models import Subject, Course
 
@@ -8,7 +7,7 @@ class SubjectListSerializer(serializers.ModelSerializer):
 
     def get_courses(self, obj):
         courses = [
-            course.title for course in obj.courses.get_queryset().only('title')
+            {'title': course.title, 'slug': course.slug} for course in obj.courses.get_queryset()
         ]
         return courses
 
@@ -23,16 +22,16 @@ class CourseListSerializer(serializers.ModelSerializer):
 
     def get_chapters(self, obj):
         chapters = [
-            chapter.title for chapter in obj.chapters.get_queryset().only('title')
+            chapter.title for chapter in obj.chapters.get_queryset()
         ]
         return chapters
 
     def get_subjects(self, obj):
         subjects = [
-            subject.title for subject in obj.subject.get_queryset().only('title')
+            {'title': subject.title, 'slug': subject.slug} for subject in obj.subject.get_queryset()
         ]
         return subjects
 
     class Meta:
         model = Course
-        fields = ('owner', 'subjects', 'title', 'description', 'chapters')
+        fields = ('owner', 'description', 'title', 'chapters', 'subjects')
