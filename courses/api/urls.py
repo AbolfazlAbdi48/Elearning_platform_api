@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import (
     SubjectList,
-    CourseList
+    CourseList,
+    CourseDetail
 )
 
 urlpatterns = [
@@ -10,4 +11,5 @@ urlpatterns = [
 
     # courses
     path('courses/', CourseList.as_view(), name='course-list'),
+    path('courses/<int:pk>/<slug:slug>', CourseDetail.as_view(), name='course-detail'),
 ]

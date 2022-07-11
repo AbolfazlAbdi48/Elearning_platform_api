@@ -16,7 +16,7 @@ class SubjectListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CourseListSerializer(serializers.ModelSerializer):
+class CourseListDetailSerializer(serializers.ModelSerializer):
     chapters = serializers.SerializerMethodField(method_name='get_chapters')
     subjects = serializers.SerializerMethodField(method_name='get_subjects')
 
@@ -34,4 +34,4 @@ class CourseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ('owner', 'description', 'title', 'chapters', 'subjects')
+        fields = ('id', 'owner', 'description', 'title', 'slug', 'chapters', 'subjects')
