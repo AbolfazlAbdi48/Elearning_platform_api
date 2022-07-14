@@ -23,5 +23,13 @@ class IsSuperUserOrOwner(BasePermission):
 
         return bool(
             request.user.is_authenticated and request.user.is_superuser or
-            request.user.is_authenticated and request.user.is_staff
+            obj.owner == request.user
+        )
+
+
+class ChapterAccess(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return bool(
+            request.user.is_authenticated and request.user.is_superuser or
+            obj.course.owner == request.user
         )

@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
     CreateAPIView,
     ListCreateAPIView,
@@ -6,7 +7,11 @@ from rest_framework.generics import (
 )
 from courses.api.serializers import CourseSerializer
 from courses.models import Chapter, Content, Course
-from courses.permissions import IsSuperUserOrOwner, IsSuperUserOrTeacher
+from courses.permissions import (
+    IsSuperUserOrOwner, 
+    IsSuperUserOrTeacher,
+    ChapterAccess
+)
 from teachers.api.serializers import ChapterSerializer, ContentSerializer
 
 
@@ -33,10 +38,13 @@ class ChapterListCreate(ListCreateAPIView):
     serializer_class = ChapterSerializer
 
     def get_queryset(self):
-        return Chapter.objects.filter(
-            course__pk=self.kwargs.get('course_pk'),
-            course__owner__in=[self.request.user]
+        qs = get_object_or_404(
+            Course,
+            pk=self.kwargs.get('course_pk'), 
+            status=Course.PublishStatus.PUBLISHED,
+            owner=self.request.user
         )
+        return qs.chapters.all()
 
     def perform_create(self, serializer):
         return serializer.save(
@@ -45,13 +53,13 @@ class ChapterListCreate(ListCreateAPIView):
 
 
 class ChapterUpdate(RetrieveUpdateAPIView):
-    permission_classes = [IsSuperUserOrTeacher]
+    permission_classes = [ChapterAccess,]
     serializer_class = ChapterSerializer
     queryset = Chapter.objects.all()
 
 
 class ChapterDelete(DestroyAPIView):
-    permission_classes = [IsSuperUserOrTeacher,]
+    permission_classes = [ChapterAccess,]
     serializer_class = ChapterSerializer
     queryset = Chapter.objects.all()
 
