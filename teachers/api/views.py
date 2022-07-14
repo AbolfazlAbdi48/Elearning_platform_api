@@ -34,8 +34,7 @@ class ChapterListCreate(ListCreateAPIView):
     def get_queryset(self):
         return Chapter.objects.filter(
             course__pk=self.kwargs.get('course_pk'),
-            course__owner__in=[self.request.user],
-            course__status=Course.PublishStatus.PUBLISHED
+            course__owner__in=[self.request.user]
         )
 
     def perform_create(self, serializer):
@@ -51,8 +50,7 @@ class ContentListCreate(ListCreateAPIView):
     def get_queryset(self):
         return Content.objects.filter(
             chapter__pk=self.kwargs.get('chapter_pk'),
-            chapter__course__owner__in=[self.request.user],
-            chapter__course__status=Course.PublishStatus.PUBLISHED
+            chapter__course__owner__in=[self.request.user]
         )
 
     def perform_create(self, serializer):
