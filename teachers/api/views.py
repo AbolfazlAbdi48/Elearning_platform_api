@@ -8,7 +8,7 @@ from rest_framework.generics import (
 from courses.api.serializers import CourseSerializer
 from courses.models import Chapter, Content, Course
 from courses.permissions import (
-    IsSuperUserOrOwner, 
+    IsSuperUserOrOwner,
     IsSuperUserOrTeacher,
     ChapterAccess
 )
@@ -40,7 +40,7 @@ class ChapterListCreate(ListCreateAPIView):
     def get_queryset(self):
         qs = get_object_or_404(
             Course,
-            pk=self.kwargs.get('course_pk'), 
+            pk=self.kwargs.get('course_pk'),
             status=Course.PublishStatus.PUBLISHED,
             owner=self.request.user
         )
@@ -53,13 +53,13 @@ class ChapterListCreate(ListCreateAPIView):
 
 
 class ChapterUpdate(RetrieveUpdateAPIView):
-    permission_classes = [ChapterAccess,]
+    permission_classes = [ChapterAccess, ]
     serializer_class = ChapterSerializer
     queryset = Chapter.objects.all()
 
 
 class ChapterDelete(DestroyAPIView):
-    permission_classes = [ChapterAccess,]
+    permission_classes = [ChapterAccess, ]
     serializer_class = ChapterSerializer
     queryset = Chapter.objects.all()
 
@@ -69,10 +69,12 @@ class ContentListCreate(ListCreateAPIView):
     serializer_class = ContentSerializer
 
     def get_queryset(self):
-        return Content.objects.filter(
-            chapter__pk=self.kwargs.get('chapter_pk'),
-            chapter__course__owner__in=[self.request.user]
+        qs = get_object_or_404(
+            Chapter,
+            pk=self.kwargs.get('chapter_pk'),
+            course__owner=self.request.user
         )
+        return qs.contents.all()
 
     def perform_create(self, serializer):
         return serializer.save(
