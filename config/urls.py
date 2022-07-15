@@ -42,6 +42,7 @@ urlpatterns = [
     path('api/rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 
     path('teachers/', include('teachers.urls')),
+    path('students/', include('students.urls')),
     path('', include('courses.urls')),
 
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
