@@ -10,7 +10,8 @@ from courses.models import Chapter, Content, Course
 from courses.permissions import (
     IsSuperUserOrOwner,
     IsSuperUserOrTeacher,
-    ChapterAccess
+    ChapterAccess,
+    ContentAccess
 )
 from teachers.api.serializers import ChapterSerializer, ContentSerializer
 

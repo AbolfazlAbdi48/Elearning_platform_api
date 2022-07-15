@@ -33,3 +33,11 @@ class ChapterAccess(BasePermission):
             request.user.is_authenticated and request.user.is_superuser or
             obj.course.owner == request.user
         )
+
+
+class ContentAccess(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return bool(
+            request.user.is_authenticated and request.user.is_superuser or
+            obj.chapter.course.owner == request.user
+        )
