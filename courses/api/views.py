@@ -24,7 +24,7 @@ class CourseList(ListAPIView):
     """
 
     serializer_class = CourseListDetailSerializer
-    queryset = Course.objects.filter(status=Course.PublishStatus.PUBLISHED)
+    queryset = Course.objects.published()
 
 
 class CourseDetail(RetrieveAPIView):

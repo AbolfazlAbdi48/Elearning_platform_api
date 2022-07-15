@@ -1,6 +1,6 @@
-from turtle import ondrag
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from courses.managers import CourseManager
 from extensions.base_models import BaseModel
 from django.contrib.auth import get_user_model
 
@@ -47,6 +47,8 @@ class Course(BaseModel):
     status = models.CharField(
         max_length=10, choices=PublishStatus.choices, default=PublishStatus.DRAFT, verbose_name=_('status')
     )
+
+    objects = CourseManager()
 
     class Meta:
         verbose_name = _('course')
