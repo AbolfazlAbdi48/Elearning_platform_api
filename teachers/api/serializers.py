@@ -12,4 +12,4 @@ class ChapterSerializer(serializers.ModelSerializer):
 class ContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Content
-        fields = ('title', 'description', 'video_file', 'attached_file', 'is_active')
+        fields = ('id', 'title', 'description', 'video_file', 'attached_file', 'is_active')

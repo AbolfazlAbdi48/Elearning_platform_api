@@ -4,6 +4,7 @@ from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateAPIView,
     DestroyAPIView,
+    RetrieveUpdateDestroyAPIView
 )
 from courses.api.serializers import CourseSerializer
 from courses.models import Chapter, Content, Course
@@ -81,3 +82,9 @@ class ContentListCreate(ListCreateAPIView):
         return serializer.save(
             chapter_id=self.kwargs.get('chapter_pk')
         )
+
+
+class ContentDetail(RetrieveUpdateDestroyAPIView):
+    permission_classes = [ContentAccess, ]
+    serializer_class = ContentSerializer
+    queryset = Content.objects.all()

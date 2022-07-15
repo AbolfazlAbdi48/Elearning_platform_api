@@ -2,6 +2,7 @@ from django.urls import path
 from .views import (
     ChapterDelete,
     ChapterUpdate,
+    ContentDetail,
     CourseCreate,
     CourseUpdate,
     ChapterListCreate,
@@ -20,4 +21,5 @@ urlpatterns = [
 
     # contents
     path('contents/<int:chapter_pk>', ContentListCreate.as_view(), name='content-list-create'),
+    path('contents/detail/<int:pk>', ContentDetail.as_view(), name='content-detail-update-delete'),
 ]
