@@ -3,7 +3,6 @@ from rest_framework.generics import (
     CreateAPIView,
     ListCreateAPIView,
     RetrieveUpdateAPIView,
-    DestroyAPIView,
     RetrieveUpdateDestroyAPIView
 )
 from courses.api.serializers import CourseSerializer
@@ -54,13 +53,7 @@ class ChapterListCreate(ListCreateAPIView):
         )
 
 
-class ChapterUpdate(RetrieveUpdateAPIView):
-    permission_classes = [ChapterAccess, ]
-    serializer_class = ChapterSerializer
-    queryset = Chapter.objects.all()
-
-
-class ChapterDelete(DestroyAPIView):
+class ChapterDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [ChapterAccess, ]
     serializer_class = ChapterSerializer
     queryset = Chapter.objects.all()

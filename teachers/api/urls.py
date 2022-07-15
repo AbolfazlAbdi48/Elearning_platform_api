@@ -1,12 +1,11 @@
 from django.urls import path
 from .views import (
-    ChapterDelete,
-    ChapterUpdate,
-    ContentDetail,
     CourseCreate,
     CourseUpdate,
     ChapterListCreate,
-    ContentListCreate
+    ChapterDetail,
+    ContentListCreate,
+    ContentDetail,
 )
 
 urlpatterns = [
@@ -16,8 +15,7 @@ urlpatterns = [
 
     # chapters
     path('chapters/<int:course_pk>', ChapterListCreate.as_view(), name='chapter-list-create'),
-    path('chapters/update/<int:pk>', ChapterUpdate.as_view(), name='chapter-update'),
-    path('chapters/delete/<int:pk>', ChapterDelete.as_view(), name='chapter-delete'),
+    path('chapters/detail/<int:pk>', ChapterDetail.as_view(), name='chapter-detail-update-delete'),
 
     # contents
     path('contents/<int:chapter_pk>', ContentListCreate.as_view(), name='content-list-create'),
