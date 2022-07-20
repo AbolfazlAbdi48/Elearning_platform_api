@@ -101,3 +101,38 @@ class Content(BaseModel):
 
     def __str__(self):
         return f"{self.title}"
+
+
+class Order(models.Model):
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='orders', verbose_name=_('Owner')
+    )
+    is_paid = models.BooleanField(default=False, verbose_name=_('Is Paid'))
+    created = models.DateTimeField(
+        auto_now_add=True, verbose_name=_('Created'))
+    payment_date = models.DateTimeField(
+        null=True, blank=True, verbose_name=_('Payment Date'))
+
+    class Meta:
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
+
+    def __str__(self):
+        return f"{self.owner} | {self.created}"
+
+
+class OrderDetail(models.Model):
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name='courses', verbose_name=_('Course')
+    )
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='order_details', verbose_name=_('Order')
+    )
+    price = models.IntegerField(verbose_name=_('Price'))
+
+    class Meta:
+        verbose_name = _('Order Detail')
+        verbose_name_plural = _('Order Details')
+
+    def __str__(self):
+        return f"{self.order} | {self.course}"

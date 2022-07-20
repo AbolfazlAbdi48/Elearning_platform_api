@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Subject, Course, Chapter, Content
+from .models import (
+    Subject,
+    Course,
+    Chapter,
+    Content,
+    Order,
+    OrderDetail
+)
 
 # Register your models here.
 
@@ -40,3 +47,5 @@ admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Chapter, ChapterAdmin)
 admin.site.register(Content, ContentAdmin)
+admin.site.register(Order)
+admin.site.register(OrderDetail)
