@@ -21,7 +21,7 @@ class SubjectAdmin(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'updated')
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'slug', 'owner', 'status')
+    list_display = ('title', 'slug', 'owner', 'price', 'status')
     inlines = [ChapterInline]
 
 

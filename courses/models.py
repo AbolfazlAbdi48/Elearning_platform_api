@@ -47,6 +47,7 @@ class Course(BaseModel):
     status = models.CharField(
         max_length=10, choices=PublishStatus.choices, default=PublishStatus.DRAFT, verbose_name=_('status')
     )
+    price = models.IntegerField(default=0, verbose_name=_('price'))
 
     objects = CourseManager()
 
