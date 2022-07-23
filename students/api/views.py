@@ -20,30 +20,25 @@ class StudentCoursesList(ListAPIView):
 class OrderDetailView(APIView):
     permission_classes = [IsAuthenticated, ]
 
-    def get(self, request, format=None):
-        pass
-
     def post(self, request, format=None):
         serializer = OrderDetailSerializer(data=request.data)
         if serializer.is_valid():
             course = serializer.validated_data.get('course')
             try:
                 order = Order.objects.get(owner=request.user, is_paid=False)
-                order_detail = OrderDetail(
-                    order=order,
-                    price=course.price,
-                    course=course
-                )
-                order_detail.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
             except Order.DoesNotExist:
                 order = Order(owner=request.user)
+                order.save()
+
+            if not (course.id,) in order.order_details.values_list('course'):
                 order_detail = OrderDetail(
                     order=order,
                     price=course.price,
                     course=course
                 )
-                order.save()
                 order_detail.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({'course exist'}, status=status.HTTP_302_FOUND)
+                
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
