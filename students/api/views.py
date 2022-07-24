@@ -6,7 +6,7 @@ from rest_framework import status
 
 from courses.api.serializers import CourseListDetailSerializer
 from courses.models import Course, Order, OrderDetail
-from students.api.serializers import OrderDetailSerializer
+from students.api.serializers import OrderSerializer, OrderDetailSerializer
 
 
 class StudentCoursesList(ListAPIView):
@@ -15,6 +15,14 @@ class StudentCoursesList(ListAPIView):
 
     def get_queryset(self):
         return Course.objects.student_courses(self.request.user)
+
+
+class StudentOrderList(ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(owner=self.request.user).order_by('-created')
 
 
 class OrderDetailView(APIView):
@@ -40,5 +48,5 @@ class OrderDetailView(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response({'course exist'}, status=status.HTTP_302_FOUND)
-                
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
