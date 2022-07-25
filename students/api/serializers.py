@@ -11,3 +11,8 @@ class OrderDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderDetail
         fields = ('course',)
+
+class OrderDetailDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderDetail
+        fields = ('order', 'id')
