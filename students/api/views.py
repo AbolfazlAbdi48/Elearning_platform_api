@@ -1,4 +1,5 @@
-from rest_framework.generics import ListAPIView
+from django.shortcuts import get_object_or_404
+from rest_framework.generics import ListAPIView, DestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,7 +7,7 @@ from rest_framework import status
 
 from courses.api.serializers import CourseListDetailSerializer
 from courses.models import Course, Order, OrderDetail
-from students.api.serializers import OrderSerializer, OrderDetailSerializer
+from students.api.serializers import OrderDetailDeleteSerializer, OrderSerializer, OrderDetailSerializer
 
 
 class StudentCoursesList(ListAPIView):
@@ -50,3 +51,13 @@ class OrderDetailView(APIView):
                 return Response({'course exist'}, status=status.HTTP_302_FOUND)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrderDetailDeleteView(DestroyAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = OrderDetailDeleteSerializer
+
+    def get_object(self):
+        return get_object_or_404(
+            OrderDetail, order__is_paid=False, order__owner=self.request.user, pk=self.kwargs.get('pk')
+        )

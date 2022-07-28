@@ -5,7 +5,7 @@ from courses.models import OrderDetail, Order
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ('is_paid', 'created', 'payment_date')
+        fields = ('id', 'is_paid', 'created', 'payment_date')
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,4 +15,4 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 class OrderDetailDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderDetail
-        fields = ('order', 'id')
+        fields = ('id', 'title')

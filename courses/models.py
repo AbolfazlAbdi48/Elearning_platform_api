@@ -118,7 +118,7 @@ class Order(models.Model):
         verbose_name_plural = _('Orders')
 
     def __str__(self):
-        return f"{self.owner} | {self.created}"
+        return f"{self.id} - {self.owner}"
 
 
 class OrderDetail(models.Model):
@@ -135,4 +135,4 @@ class OrderDetail(models.Model):
         verbose_name_plural = _('Order Details')
 
     def __str__(self):
-        return f"{self.order} | {self.course}"
+        return f"{self.order} | {self.course} | order : {self.order.id}"
