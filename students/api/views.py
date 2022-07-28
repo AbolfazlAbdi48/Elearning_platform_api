@@ -7,7 +7,7 @@ from rest_framework import status
 
 from courses.api.serializers import CourseListDetailSerializer
 from courses.models import Course, Order, OrderDetail
-from students.api.serializers import OrderDetailDeleteSerializer, OrderSerializer, OrderDetailSerializer
+from students.api.serializers import OrderSerializer, OrderDetailSerializer
 
 
 class StudentCoursesList(ListAPIView):
@@ -55,7 +55,7 @@ class OrderDetailView(APIView):
 
 class OrderDetailDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated,]
-    serializer_class = OrderDetailDeleteSerializer
+    serializer_class = OrderDetailSerializer
 
     def get_object(self):
         return get_object_or_404(
