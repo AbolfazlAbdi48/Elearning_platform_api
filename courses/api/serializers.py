@@ -16,7 +16,7 @@ class SubjectListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CourseListDetailSerializer(serializers.ModelSerializer):
+class CourseListSerializer(serializers.ModelSerializer):
     subjects = serializers.SerializerMethodField(method_name='get_subjects')
     owner_name = serializers.CharField(source='owner.get_full_name')
     chapters_count = serializers.IntegerField(source='chapters.count')
@@ -31,6 +31,38 @@ class CourseListDetailSerializer(serializers.ModelSerializer):
         model = Course
         fields = ('id', 'owner_name', 'description', 'title',
                   'slug', 'subjects', 'price', 'chapters_count')
+
+
+class CourseDetailSerializer(serializers.ModelSerializer):
+    subjects = serializers.SerializerMethodField(method_name='get_subjects')
+    chapters = serializers.SerializerMethodField(method_name='get_chapters')
+    owner_name = serializers.CharField(source='owner.get_full_name')
+
+    def get_subjects(self, obj):
+        subjects = [
+            {'title': subject.title, 'id': subject.id} for subject in obj.subject.get_queryset()
+        ]
+        return subjects
+
+    def get_chapters(self, obj):
+        chapters = [
+            {
+                "id": chapter.id,
+                "title": chapter.title,
+                "description": chapter.description,
+                "contents": [
+                    {"title": content.title, "id": content.id} for content in chapter.contents.get_queryset()
+                ]
+            } for chapter in obj.chapters.get_queryset()
+        ]
+        return chapters
+
+    class Meta:
+        model = Course
+        fields = (
+            'id', 'owner_name', 'description', 'title', 'slug', 'subjects', 'price',
+            'owner_name', 'chapters'
+        )
 
 
 class CourseSerializer(serializers.ModelSerializer):

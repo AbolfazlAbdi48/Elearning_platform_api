@@ -5,14 +5,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from courses.api.serializers import CourseListDetailSerializer
+from courses.api.serializers import CourseListSerializer
 from courses.models import Course, Order, OrderDetail
 from students.api.serializers import OrderSerializer, OrderDetailSerializer
 
 
 class StudentCoursesList(ListAPIView):
     permission_classes = [IsAuthenticated, ]
-    serializer_class = CourseListDetailSerializer
+    serializer_class = CourseListSerializer
 
     def get_queryset(self):
         return Course.objects.student_courses(self.request.user)

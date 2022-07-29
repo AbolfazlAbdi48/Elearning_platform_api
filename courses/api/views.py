@@ -2,7 +2,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from courses.models import Course, Subject
 
-from .serializers import CourseListDetailSerializer, SubjectListSerializer
+from .serializers import CourseListSerializer, SubjectListSerializer, CourseDetailSerializer
 
 # create your views here.
 
@@ -23,7 +23,7 @@ class CourseList(ListAPIView):
         return published courses for all users.
     """
 
-    serializer_class = CourseListDetailSerializer
+    serializer_class = CourseListSerializer
     queryset = Course.objects.published()
 
 
@@ -32,5 +32,5 @@ class CourseDetail(RetrieveAPIView):
     get:
         return published course by pk, slug.
     """
-    serializer_class = CourseListDetailSerializer
+    serializer_class = CourseDetailSerializer
     queryset = Course.objects.filter(status=Course.PublishStatus.PUBLISHED)
