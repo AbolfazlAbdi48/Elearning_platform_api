@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from courses.models import Subject, Course
+from courses.models import Chapter, Subject, Course
 
 
 class SubjectListSerializer(serializers.ModelSerializer):
@@ -48,11 +48,7 @@ class CourseDetailSerializer(serializers.ModelSerializer):
         chapters = [
             {
                 "id": chapter.id,
-                "title": chapter.title,
-                "description": chapter.description,
-                "contents": [
-                    {"title": content.title, "id": content.id} for content in chapter.contents.get_queryset()
-                ]
+                "title": chapter.title
             } for chapter in obj.chapters.get_queryset()
         ]
         return chapters
@@ -69,3 +65,17 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ('subject', 'title', 'description', 'price')
+
+
+class ChapterDetailSerializer(serializers.ModelSerializer):
+    contents = serializers.SerializerMethodField(method_name='get_contents')
+
+    def get_contents(self, obj):
+        contents = [
+            {"id": content.id, "title": content.title} for content in obj.contents.get_queryset()
+        ]
+        return contents
+
+    class Meta:
+        model = Chapter
+        fields = ('id', 'title', 'description', 'contents')

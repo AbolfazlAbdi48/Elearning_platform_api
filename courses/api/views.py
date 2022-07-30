@@ -1,8 +1,13 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from courses.models import Course, Subject
+from courses.models import Chapter, Course, Subject
 
-from .serializers import CourseListSerializer, SubjectListSerializer, CourseDetailSerializer
+from .serializers import (
+    CourseListSerializer,
+    SubjectListSerializer,
+    CourseDetailSerializer,
+    ChapterDetailSerializer
+)
 
 # create your views here.
 
@@ -34,3 +39,8 @@ class CourseDetail(RetrieveAPIView):
     """
     serializer_class = CourseDetailSerializer
     queryset = Course.objects.filter(status=Course.PublishStatus.PUBLISHED)
+
+
+class ChapterDetail(RetrieveAPIView):
+    serializer_class = ChapterDetailSerializer
+    queryset = Chapter.objects.all()
